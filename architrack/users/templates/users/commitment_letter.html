@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- Main Section -->
+  <main class="profile my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--2of3">
+          <div class="card text-center">
+            <div class="card__body dev">
+              <h2 class="dev__name">{{profile.name}}</h2>
+              <p class="dev__location">Al generar este carta se compromete a cumplir con las 50 horas de capacitación requeridas en el ciclo actual</p>
+              <a href="{% url 'commitment-pdf' profile.id %}" class="btn btn--sub btn--lg">Enviar Mensaje </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock content %}

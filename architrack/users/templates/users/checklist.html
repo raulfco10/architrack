@@ -1,0 +1,369 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- Main Section -->
+  <main class="profile my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <div class="card text-center">
+            <div class="card__body dev">
+              <img class="avatar avatar--xl" src="{{ profile.profile_image.url }}" />
+              <h2 class="dev__name">{{profile.name}}</h2>
+              <p class="dev__title">{{profile.short_intro}}</p>
+              <p class="dev__location">Base en {{profile.location}}</p>
+              
+            </div>
+          </div>
+        
+          <div class="card text-center">
+            <div class="card__body dev">
+              <div class="settings">
+                <h3>Documentacion</h3>
+              </div>
+              <table class="settings__table">
+                
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Solicitud</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.request %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Carta de veracidad</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.veracity_letter %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Titulo</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.degree %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Foto digital</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.photo %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Pago inscripción</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.inscription %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Pago Anualidad</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.annuity %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Cedula Federal</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.degree_card %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Cedula Especialidad</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.speciallity_card %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>RFC</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.rfc %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Comprobante de Domicilio</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.proof_of_address %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Identificación Oficial</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.ife %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>CURP</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.curp %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Curriculum</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.resume %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Alta de hacienda</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.sat_enrollment %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Libro de arquitectura / Tesis</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.thesis %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>2 cartas de referencia</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.referral_cards %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Acta de nacimiento</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.born_certificate %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Licencia de Giro Municipal</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.municipality_licence %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>Cedula Estatal</h4>
+                  </td>
+                  <td class="settings__tableActions">
+                  {% if profile.state_card %}
+                    <a class="tag tag--pill tag--yes settings__btn" href="#">Si</a>
+                  {% else %}
+                    <a class="tag tag--pill tag--no settings__btn" href="#">No</a>
+                  {% endif %}
+                  </td>
+                </tr>
+                
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="column column--2of3">
+          <div class="devInfo">
+            <h3 class="devInfo__title">Especialidades</h3>
+            <div class="devInfo__skills">
+
+              {% for skill in skills %}
+              <div class="devSkill">
+                <h4 class="devSkill__title">{{skill.name}}</h4>
+                <p class="devSkill__info">{{skill.description}}</p>
+              </div>
+              {% endfor %}
+            
+            </div>
+
+          <div class="devInfo">
+            <h3 class="devInfo__title">Cursos Tomados</h3>
+          </div>
+          <table class="settings__table">
+          <thead class="thead-dark">
+            <tr>
+              <th class="settings__tableCourses">Curso</th>
+              <th class="settings__tableCourses">Año</th>
+              <th class="settings__tableCourses">Horas</th>
+              <th class="settings__tableCourses">Institucion</th>
+            </tr>
+          </thead>
+          {% for course in courses %}
+          <tr>
+            <td class="settings__tableCourses">
+              <p>{{course.name}}</p>
+            </td>
+            <td class="settings__tableCourses">
+              <p>{{course.year}}</p>
+            </td>
+            <td class="settings__tableCourses">
+              <p class="devSkill__title">{{course.hours}}</p>
+            </td>
+            <td class="settings__tableCourses">
+              <p class="devSkill__info">{{course.institution}}</p>
+            </td>
+          </tr>
+          {% endfor %}
+          </table>
+
+          <div class="devInfo">
+            <h3 class="devInfo__title">Horas de capacitación</h3>
+            <div class="devInfo__skills">
+              <div class="devInfo__otherSkills">
+              
+                <span class="tag tag--pill tag--sub tag--lg">
+                  <small>{{profile.training_hours}}</small>
+                </span>
+              
+              </div>
+            </div>
+          </div>
+
+          <div class="devInfo">
+            <h3 class="devInfo__title">Años Pagados</h3>
+            <div class="devInfo__skills">
+              <div class="devInfo__otherSkills">
+              {% for year in yearsPaid %}
+                <span class="tag tag--pill tag--sub tag--lg">
+                  <small>{{year}}</small>
+                </span>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <div class="devInfo">
+            <h3 class="devInfo__title">Estatus</h3>
+            <div class="devInfo__skills">
+              <div class="devInfo__otherSkills">
+              
+                <span class="tag tag--pill tag--sub tag--lg">
+                {% if profile.status %}
+                  <small>Activo</small>
+                {% else %}
+                  <small>Inactivo</small>
+                {% endif %}
+                </span>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock content %}
