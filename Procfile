@@ -1,1 +1,1 @@
-web: gunicorn architrack.wsgi --log-file -
+web: gunicorn --pythonpath architrack architrack.wsgi  --log-file -
