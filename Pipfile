@@ -19,6 +19,7 @@ boto3 = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
+gunicorn = "*"
 
 [dev-packages]
 
