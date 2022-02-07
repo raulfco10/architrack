@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@p2b+8m5r7uwe*q=h6kr1)!%*ou=)1tuvf#t3935$%2cgg&di$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'architrack.herokuapp.com/']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'architrack.herokuapp.com']
 
 
 # Application definition
