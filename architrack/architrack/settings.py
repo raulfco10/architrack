@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@p2b+8m5r7uwe*q=h6kr1)!%*ou=)1tuvf#t3935$%2cgg&di$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'architrack.herokuapp.com/']
 
 
 # Application definition
@@ -206,3 +206,7 @@ AWS_ACCESS_KEY_ID = 'AKIAXXCHWQE6RT4RUXGH'
 AWS_S3_FILE_OVERWRITE = False
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'architrack-bucket'
+
+
+if os.getcwd() == '/app':
+    DEBUG = False
