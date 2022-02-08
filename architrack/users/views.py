@@ -615,7 +615,7 @@ def dro_pdf(request, pk):
     y = h - 150
     para.drawOn(p, 1*cm, y)
 
-    text_responsible_title = "<b>Encargado del Despacho de Ordenamiento del Territorio</b>"
+    text_responsible_title = "<b>" + location.position_responsible + "</b>"
     style_responsible_title = getSampleStyleSheet()["Normal"]
     style_responsible_title.alignment = TA_LEFT
     para = Paragraph(text_responsible_title, style_responsible_title)
@@ -623,13 +623,13 @@ def dro_pdf(request, pk):
     y = h - 165
     para.drawOn(p, 1*cm, y)
 
-    text_responsible_title = "<b>De Obras Públicas de {}, Jalisco.</b>".format(location)
-    style_responsible_title = getSampleStyleSheet()["Normal"]
-    style_responsible_title.alignment = TA_LEFT
-    para = Paragraph(text_responsible_title, style_responsible_title)
-    x, y = para.wrap(18*cm, 10*cm)
-    y = h - 180
-    para.drawOn(p, 1*cm, y)
+    #text_responsible_title = "<b>De Obras Públicas de {}, Jalisco.</b>".format(location)
+    #style_responsible_title = getSampleStyleSheet()["Normal"]
+    #style_responsible_title.alignment = TA_LEFT
+    #para = Paragraph(text_responsible_title, style_responsible_title)
+    #x, y = para.wrap(18*cm, 10*cm)
+    #y = h - 180
+    #para.drawOn(p, 1*cm, y)
 
     text_presente = "Presente:"
     style_presente = getSampleStyleSheet()["Normal"]

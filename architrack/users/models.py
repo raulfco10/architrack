@@ -1,3 +1,4 @@
+from turtle import position
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
@@ -7,6 +8,7 @@ class Location(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     responsible = models.TextField(max_length=200, blank=True, null=True)
+    position_responsible = models.TextField(max_length=500, blank=True, null=True)
     address = models.TextField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
