@@ -2,7 +2,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from .serializers import ProfileSerializer, ProjectSerializer, LocationSerializer, ModalitySerializer, SkillSerializer, YearSerializer
+from .serializers import (ProfileSerializer, ProjectSerializer, LocationSerializer, 
+ModalitySerializer, SkillSerializer, YearSerializer, CourseSerializer)
 from projects.models import Project, Review
 from users.models import Profile, Location, Modality, Skill, Year, Course
 
@@ -222,4 +223,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
         serializer = ProfileSerializer(new_profile)
         return Response(serializer.data)
+
+@permission_classes([IsAuthenticated])
+class CourseViewSet(viewsets.ModelViewSet):
+    serializer_class = CourseSerializer
+    def get_queryset(self):
+        course = Course.objects.all()
+        return course
 
