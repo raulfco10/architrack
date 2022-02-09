@@ -52,7 +52,7 @@ def sendDataDRO(request, pk):
     profile = Profile.objects.get(id=pk)
     location_field = request.GET.get('location')
     location = Location.objects.get(name = location_field)
-    print(type(location.responsible))
+    #print(type(location.responsible))
     modality = request.GET.get('modality')
 
     return profile, location, modality

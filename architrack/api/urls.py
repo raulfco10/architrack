@@ -11,6 +11,7 @@ from rest_framework_simplejwt.views import (
 router = DefaultRouter()
 router.register("profile", views.ProfileViewSet, basename="profile")
 router.register("course", views.CourseViewSet, basename="course")
+router.register("skill", views.SkillViewSet, basename="skill")
 
 urlpatterns = [
     path('users/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -24,7 +25,7 @@ urlpatterns = [
     #path('profile/', views.createProfile),
     path('locations/', views.createLocation),
     path('modalities/', views.createModality),
-    path('skills/', views.createSkill),
+    #path('skills/', views.createSkill),
     path('years/', views.createYear),
 
     url('', include(router.urls))

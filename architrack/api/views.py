@@ -219,7 +219,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         
         for course in data['courses']:
             course_obj = Course.objects.get(name=course["name"])
-            new_profile.years.add(course_obj)
+            new_profile.courses.add(course_obj)
 
         serializer = ProfileSerializer(new_profile)
         return Response(serializer.data)
@@ -230,4 +230,12 @@ class CourseViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         course = Course.objects.all()
         return course
+
+
+@permission_classes([IsAuthenticated])
+class SkillViewSet(viewsets.ModelViewSet):
+    serializer_class = SkillSerializer
+    def get_queryset(self):
+        skill = Skill.objects.all()
+        return skill
 
