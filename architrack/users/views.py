@@ -661,7 +661,7 @@ def dro_pdf(request, pk):
     y = h - 330
     para.drawOn(p, 1*cm, y)
 
-    text_data = "No. Agrediado: <b>" + str(profile.agremiado_number) + "</b>"
+    text_data = "No. Agremiado: <b>" + str(profile.agremiado_number) + "</b>"
     style_data = getSampleStyleSheet()["Normal"]
     style_data.alignment = TA_LEFT
     para = Paragraph(text_data, style_data)
@@ -677,7 +677,7 @@ def dro_pdf(request, pk):
     y = h - 390
     para.drawOn(p, 1*cm, y)
 
-    text_data = "Registro: <b>2108</b>"
+    text_data = "Registro: <b>drz-2108</b>"
     style_data = getSampleStyleSheet()["Normal"]
     style_data.alignment = TA_LEFT
     para = Paragraph(text_data, style_data)
@@ -725,13 +725,13 @@ def dro_pdf(request, pk):
     y = h - 570
     para.drawOn(p, 1*cm, y)
 
-    text_data = "Fecha de expedición: <i>Gualajara, Jalisco</i>. " + str(now.day) + "/" + str(now.month) + "/" + str(now.year)
-    style_data = getSampleStyleSheet()["Normal"]
-    style_data.alignment = TA_LEFT
-    para = Paragraph(text_data, style_data)
-    x, y = para.wrap(18*cm, 10*cm)
-    y = h - 600
-    para.drawOn(p, 1*cm, y)
+    #text_data = "Carta con vigencia del año en curso"
+    #style_data = getSampleStyleSheet()["Normal"]
+    #style_data.alignment = TA_LEFT
+    #para = Paragraph(text_data, style_data)
+    #x, y = para.wrap(18*cm, 10*cm)
+    #y = h - 600
+    #para.drawOn(p, 1*cm, y)
 
     slogan_text = '''ATENTAMENTE: 
         <b><i>"LOS ARQUITECTOS AL SERVICIO DE LA COLECTIVIDAD"</i></b>
@@ -744,7 +744,7 @@ def dro_pdf(request, pk):
     
     para = Paragraph(slogan_text, slogan_style)
     x, y = para.wrap(18*cm, 10*cm)
-    y = h - 670
+    y = h - 660
     para.drawOn(p, 1*cm, y)
 
 
@@ -759,7 +759,15 @@ def dro_pdf(request, pk):
     
     para = Paragraph(president_text, president_style)
     x, y = para.wrap(18*cm, 10*cm)
-    y = h - 730
+    y = h - 720
+    para.drawOn(p, 1*cm, y)
+
+    text_data = "Carta con vigencia del año en curso: <i>Gualajara, Jalisco</i>. " + str(now.day) + "/" + str(now.month) + "/" + str(now.year)
+    style_data = getSampleStyleSheet()["Normal"]
+    style_data.alignment = TA_LEFT
+    para = Paragraph(text_data, style_data)
+    x, y = para.wrap(18*cm, 10*cm)
+    y = h - 760
     para.drawOn(p, 1*cm, y)
 
     
