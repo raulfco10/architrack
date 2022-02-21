@@ -9,6 +9,7 @@
         <div class="column column--1of3">
           <div class="card text-center">
             <div class="card__body dev">
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account-admin' profile.id %}"><i class="im im-edit"></i> Editar</a>
               <a class="tag tag--pill tag--main settings__btn" href="{% url 'dro-form' profile.id %}">DRO</a>
               <a class="tag tag--pill tag--main settings__btn" href="{% url 'veracity-pdf' profile.id %}">Veracidad</a>
               {% if totalTrainingHours < 50 %}
@@ -58,6 +59,7 @@
           </div>
           <div class="devInfo">
             <h3 class="devInfo__title">Especialidades</h3>
+            <!--<a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'create-skill-admin' profile.id %}"><i class="im im-plus"></i> Agregar Especialidad</a>-->
             <div class="devInfo__skills">
 
               {% for skill in topSkills %}

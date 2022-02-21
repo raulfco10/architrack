@@ -1,5 +1,5 @@
 from django.urls import path
-from django.conf.urls import url, include
+from django.conf.urls import include
 from . import views
 from rest_framework.routers import DefaultRouter
 
@@ -28,6 +28,6 @@ urlpatterns = [
     #path('skills/', views.createSkill),
     path('years/', views.createYear),
 
-    url('', include(router.urls))
+    path('', include(router.urls))
 
 ]
