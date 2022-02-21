@@ -557,7 +557,7 @@ def commitment_pdf(request, pk):
     para.drawOn(p, 1*cm, y)
 
     main_text = "El que suscribe la presente. nombre_agremiado Identificándome Con número de cedula Estatal Expreso mi"\
-    "compromiso para acreditar ante el Colegio de Arquitectos del Estado de Jalisco A.C. un total de <b>50</b> "\
+    "compromiso para acreditar ante el Colegio de Arquitectos del Estado de Jalisco A.C. un total de <b>150</b> "\
     "horas de Capacitación para garantizar la <b>Actualización Profesional</b>."
     style = getSampleStyleSheet()["Normal"]
     style.alignment = TA_JUSTIFY
