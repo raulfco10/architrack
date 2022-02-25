@@ -316,14 +316,19 @@ def import_csv(request):
             excel_url = str(settings.BASE_DIR) + static(excel_file)
             print(excel_url) 
             #empexceldata = pd.read_csv(excel_url,encoding='utf-8')
-            empexceldata = pd.read_csv(excel_url,encoding='latin-1')
+            empexceldata = pd.read_csv(excel_url, header=0, names=['num_agremiado', 'nombre', 'email', 'username', 'telefono','celular'],encoding='latin-1')
             dbframe = empexceldata
+            print(dbframe)
             for dbframe in dbframe.itertuples():
                 
-                obj = Profile.objects.create(agremiado_number=dbframe.num_agremiado, name=dbframe.nombre, email=dbframe.email, username=dbframe.username, phone=dbframe.telefono, mobile=dbframe.celular)
-                #obj = User.objects.create(username=dbframe.username, first_name=dbframe.nombre)
-                print(type(obj))
+                #obj = Profile.objects.create(agremiado_number=dbframe.num_agremiado, name=dbframe.nombre, email=dbframe.email, username=dbframe.username, phone=dbframe.telefono, mobile=dbframe.celular)
+                obj = User.objects.create(username=dbframe.username, first_name=dbframe.nombre, email=dbframe.email, password="testuser1234", is_staff=False)
+                print(obj)
                 obj.save()
+
+                profile = Profile.objects.get(username=obj.username)
+                profile.agremiado_number = dbframe.num_agremiado
+                profile.save()
     
             return render(request, 'users/importexcel.html', {
                 'uploaded_file_url': uploaded_file_url
@@ -786,7 +791,7 @@ def dro_pdf(request, pk):
     y = h - 480
     para.drawOn(p, 1*cm, y)
 
-    text_data = "Teléfono: <b>" + profile.phone + "</b>"
+    text_data = "Teléfono: <b>" + str(profile.phone) + "</b>"
     style_data = getSampleStyleSheet()["Normal"]
     style_data.alignment = TA_LEFT
     para = Paragraph(text_data, style_data)
@@ -794,7 +799,7 @@ def dro_pdf(request, pk):
     y = h - 510
     para.drawOn(p, 1*cm, y)
 
-    text_data = "Celular: <b>" + profile.mobile + "</b>"
+    text_data = "Celular: <b>" + str(profile.mobile) + "</b>"
     style_data = getSampleStyleSheet()["Normal"]
     style_data.alignment = TA_LEFT
     para = Paragraph(text_data, style_data)
@@ -1145,27 +1150,28 @@ def checklist_pdf(request, pk):
         row.append(obj.name)
         dataSpecialty.append(row) 
 
-    t = Table(dataSpecialty)
-    t.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.25, colors.black),
-                        ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black)]))
-    data_len = len(dataSpecialty)
+    if len(dataSpecialty) > 0:
+        t = Table(dataSpecialty)
+        t.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+                            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black)]))
+        data_len = len(dataSpecialty)
 
-    for each in range(data_len):
-        if each % 2 == 0:
-            bg_color = colors.whitesmoke
-        else:
-            bg_color = colors.lightgrey
+        for each in range(data_len):
+            if each % 2 == 0:
+                bg_color = colors.whitesmoke
+            else:
+                bg_color = colors.lightgrey
 
-        t.setStyle(TableStyle([('BACKGROUND', (0, each), (-1, each), bg_color)]))
+            t.setStyle(TableStyle([('BACKGROUND', (0, each), (-1, each), bg_color)]))
 
-    aW = 40
-    aH = 620 - (data_len_train * 30)
+        aW = 40
+        aH = 620 - (data_len_train * 30)
 
-    w, h = header.wrap(18*cm, 4*cm)
-    header.drawOn(p, 8*cm, 615 - (data_len_train * 30))
-    aH = aH - h
-    w, h = t.wrap(aW, aH)
-    t.drawOn(p, 8*cm, aH-h)
+        w, h = header.wrap(18*cm, 4*cm)
+        header.drawOn(p, 8*cm, 615 - (data_len_train * 30))
+        aH = aH - h
+        w, h = t.wrap(aW, aH)
+        t.drawOn(p, 8*cm, aH-h)
 
 #---------------------------------------------------------------------------------------
     styles = getSampleStyleSheet()
