@@ -8,8 +8,11 @@
             <div class="formWrapper">
                 <a class="backButton" href="{% url 'account' %}"><i class="im im-angle-left"></i></a>
                 <br>
-
+                {% if source == 'admin' %}
+                <form class="form" method="POST" action="{%url 'edit-account-admin' profile.id %}" enctype="multipart/form-data">
+                {% else %}  
                 <form class="form" method="POST" action="{%url 'edit-account' %}" enctype="multipart/form-data">
+                {% endif %}
                     {% csrf_token %}
 
                     {% for field in form %}

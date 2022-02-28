@@ -32,7 +32,7 @@ class Profile(models.Model):
     #location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     #location = models.ManyToManyField('Location', blank=True)
     #modality = models.ManyToManyField('Modality', blank=True)
-    #skill = models.ManyToManyField('Skill', blank=True)
+    skill = models.ManyToManyField('Skill', blank=True)
     short_intro = models.CharField(max_length=200, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     profile_image = models.ImageField(null=True, blank=True, upload_to='profiles/', default='profiles/user-default.png')
@@ -88,7 +88,7 @@ class Profile(models.Model):
 
 
 class Skill(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    #owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)

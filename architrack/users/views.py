@@ -120,8 +120,8 @@ def profiles(request):
 def userProfile(request, pk):
     profile = Profile.objects.get(id=pk)
 
-    topSkills = profile.skill_set.exclude(description__exact="")
-    otherSkills = profile.skill_set.filter(description="")
+    #topSkills = profile.skill.exclude(description__exact="")
+    #otherSkills = profile.skill.filter(description="")
     yearsPaid = profile.years.all()
     courses = profile.courses.all()
 
@@ -131,7 +131,7 @@ def userProfile(request, pk):
         if int(course.year) >= 2021:
             totalTrainingHours += course.hours
 
-    context = {'profile':profile, 'topSkills': topSkills, 'otherSkills': otherSkills, 'yearsPaid':yearsPaid, 'courses': courses, 'totalTrainingHours': totalTrainingHours}
+    context = {'profile':profile, 'yearsPaid':yearsPaid, 'courses': courses, 'totalTrainingHours': totalTrainingHours}
     return render(request, 'users/user-profile.html', context)
 
 @login_required(login_url='login')
@@ -173,6 +173,9 @@ def editAccount(request):
 @login_required(login_url='login')
 def editAccountByAdmin(request, pk):
     profile = Profile.objects.get(id=pk) 
+
+    yearsPaid = profile.years.all()
+    #source = request.GET.get('source')
     training_hours = 0
     year_flag = False
     
@@ -187,13 +190,16 @@ def editAccountByAdmin(request, pk):
     profile.status = year_flag
 
     form = ProfileForm(instance=profile)
+    context = {'form':form, 'profile': profile, 'source': 'admin'}
+    context2 = {'profile': profile, 'yearsPaid':yearsPaid, 'courses': courses, 'totalTrainingHours': training_hours}
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('account')
+            #return redirect('account')
+            return render(request, 'users/user-profile.html', context2)
 
-    context = {'form':form}
+    
     return render(request, 'users/profile_form.html', context)
 
 @login_required(login_url='login')
@@ -895,7 +901,7 @@ def checklist_pdf(request, pk):
 
     profile = Profile.objects.get(id=pk)
 
-    skills = profile.skill_set.all()
+    skills = profile.skill.all()
 
     yearsPaid = profile.years.all()
 
