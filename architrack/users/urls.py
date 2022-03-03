@@ -28,5 +28,6 @@ urlpatterns = [
     path('delete-skill/<str:pk>/', views.deleteSkill, name="delete-skill"),
 
     path('import-csv/', views.import_csv, name="import-csv"),
+    path('import-csv-year/', views.import_csv_year, name="import-csv-year"),
 
 ]

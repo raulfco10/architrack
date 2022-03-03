@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Profile, Skill, Location, Modality
+from .models import Profile, Skill, Location, Modality, Year
 from .forms import CustomUserCreationForm, ProfileForm, SkillForm
 from .utils import searchProfiles, paginateProfiles, sendDataDRO
 from datetime import datetime
@@ -218,22 +218,25 @@ def commitmentForm(request, pk):
 
 @login_required(login_url='login')
 def createSkill(request):
-    profile = request.user.profile
+    #profile = request.user.profile
     form = SkillForm()
 
     if request.method == 'POST':
         form = SkillForm(request.POST)
         if form.is_valid():
             skill = form.save(commit=False)
-            skill.owner = profile
-            skills = Skill.objects.filter(owner=skill.owner).count()
-            print(skills)
-            if skills < 5:
-                skill.save()
-                form.save()
-                messages.success(request, 'Skill was added successfully!')
-            else:
-                messages.error(request, 'Esta persona ya tiene 5 especialidades asignadas')
+            #skill.owner = profile
+            #skills = Skill.objects.filter(owner=skill.owner).count()
+            skill.save()
+            form.save()
+            
+            #print(skills)
+            #if skills < 5:
+            #    skill.save()
+            #    form.save()
+            #    messages.success(request, 'Skill was added successfully!')
+            #else:
+            #    messages.error(request, 'Esta persona ya tiene 5 especialidades asignadas')
             return redirect('account')
 
     context = {'form': form}
@@ -307,6 +310,7 @@ def checkList(request, pk):
     return render(request, 'users/checklist.html', context)
 
 #------------------------------------------------imports from excel----------------------------------------------#
+#------------------------------------------------Users from excel----------------------------------------------#
 @login_required(login_url='login')
 def import_csv(request):              
     try:
@@ -337,6 +341,75 @@ def import_csv(request):
                 profile.save()
     
             return render(request, 'users/importexcel.html', {
+                'uploaded_file_url': uploaded_file_url
+            })    
+    except Exception as identifier:            
+        print(identifier)
+     
+    return render(request, 'users/importexcel.html',{})
+
+#------------------------------------------------Years from excel----------------------------------------------#
+@login_required(login_url='login')
+def import_csv_year(request):              
+    try:
+        if request.method == 'POST' and request.FILES['myfile']:
+          
+            myfile = request.FILES['myfile']
+            print(myfile)        
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            excel_file = uploaded_file_url
+            print(excel_file) 
+            excel_url = str(settings.BASE_DIR) + static(excel_file)
+            print(excel_url) 
+            #empexceldata = pd.read_csv(excel_url,encoding='utf-8')
+            empexceldata = pd.read_csv(excel_url, header=0, names=['num_agremiado', 'nombre', 'y_2018', 'y_2019', 'y_2020', 'y_2021', 'y_2022'],encoding='latin-1')
+            dbframe = empexceldata
+            #print(dbframe)
+            for dbframe in dbframe.itertuples():
+                
+                try:
+                    profile = Profile.objects.get(agremiado_number=dbframe.num_agremiado)
+                    profile.years.clear()
+                    print("------------------------------------")
+                    print("Usuario: ", profile)
+                    print("Nombre: ", profile.name)
+                    print("Numero de agremiado: ", profile.agremiado_number)
+        
+                    if str(dbframe.y_2018) != "nan":
+                        print(str(dbframe.y_2018))
+                        year = Year.objects.get(name = "2018")
+                        profile.years.add(year)
+
+                    if str(dbframe.y_2019) != "nan":
+                        print(str(dbframe.y_2019))
+                        year = Year.objects.get(name = "2019")
+                        profile.years.add(year)
+
+                    if str(dbframe.y_2020) != "nan":
+                        print(str(dbframe.y_2020))
+                        year = Year.objects.get(name = "2020")
+                        profile.years.add(year)
+
+                    if str(dbframe.y_2021) != "nan":
+                        print(str(dbframe.y_2021))
+                        year = Year.objects.get(name = "2021")
+                        profile.years.add(year)
+
+                    if str(dbframe.y_2022) != "nan":
+                        print(str(dbframe.y_2022))
+                        year = Year.objects.get(name = "2022")
+                        profile.years.add(year)
+                    print(profile.years.all())
+                    profile.save()
+                except:
+                    pass
+                
+                
+                
+    
+            return render(request, 'users/importexcelyears.html', {
                 'uploaded_file_url': uploaded_file_url
             })    
     except Exception as identifier:            
