@@ -29,5 +29,6 @@ urlpatterns = [
 
     path('import-csv/', views.import_csv, name="import-csv"),
     path('import-csv-year/', views.import_csv_year, name="import-csv-year"),
+    path('import-csv-location/', views.import_csv_location, name="import-csv-location"),
 
 ]

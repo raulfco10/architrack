@@ -415,9 +415,51 @@ def import_csv_year(request):
     except Exception as identifier:            
         print(identifier)
      
-    return render(request, 'users/importexcel.html',{})
+    return render(request, 'users/importexcelyears.html',{})
 
 #-------------------------------------------------------------------------------------------#
+
+
+#------------------------------------------------Locations from excel----------------------------------------------#
+@login_required(login_url='login')
+def import_csv_location(request):              
+    try:
+        if request.method == 'POST' and request.FILES['myfile']:
+          
+            myfile = request.FILES['myfile']
+            print(myfile)        
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            excel_file = uploaded_file_url
+            print(excel_file) 
+            excel_url = str(settings.BASE_DIR) + static(excel_file)
+            print(excel_url) 
+            #empexceldata = pd.read_csv(excel_url,encoding='utf-8')
+            empexceldata = pd.read_csv(excel_url, header=0, names=['descripcion', 'municipio', 'responsable', 'telofono'],encoding='latin-1')
+            dbframe = empexceldata
+            #print(dbframe)
+            for dbframe in dbframe.itertuples():
+                
+                try:
+                    location = Location.objects.create(name=dbframe.municipio, position_responsible=dbframe.descripcion, responsible=dbframe.responsable)
+                    location.save()
+                except:
+                    pass
+                
+                
+                
+    
+            return render(request, 'users/importexcellocations.html', {
+                'uploaded_file_url': uploaded_file_url
+            })    
+    except Exception as identifier:            
+        print(identifier)
+     
+    return render(request, 'users/importexcellocations.html',{})
+
+#-------------------------------------------------------------------------------------------#
+
 
 def veracity_pdf(request, pk):
     now = datetime.now()
