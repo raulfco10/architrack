@@ -904,7 +904,10 @@ def dro_pdf(request, pk):
     y = h - 450
     para.drawOn(p, 1*cm, y)
 
-    text_data = "Domicilio: <b>" + location.address + "</b>"
+    if location.address :
+        text_data = "Domicilio: <b>" + location.address + "</b>"
+    else:
+        text_data = "Domicilio: <b></b>"
     style_data = getSampleStyleSheet()["Normal"]
     style_data.alignment = TA_LEFT
     para = Paragraph(text_data, style_data)
