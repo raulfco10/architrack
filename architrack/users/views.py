@@ -1,12 +1,12 @@
 from django.contrib.auth import forms
-from django.http import request
+from django.http import request, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Profile, Skill, Location, Modality, Year
-from .forms import CustomUserCreationForm, ProfileForm, SkillForm
+from .models import Profile, Skill, Location, Modality, Year, LettersHistory, DroRegister, Course
+from .forms import CustomUserCreationForm, ProfileForm, SkillForm, CourseForm
 from .utils import searchProfiles, paginateProfiles, sendDataDRO
 from datetime import datetime
 from io import BytesIO
@@ -117,6 +117,15 @@ def profiles(request):
     context = {'profiles': profiles, 'search_query': search_query, 'custom_range': custom_range}
     return render(request, 'users/profiles.html', context)
 
+@login_required(login_url='login')
+def documentsHistory(request):
+    
+    documents = LettersHistory.objects.all()
+
+    context = {'documents': documents}
+    return render(request, 'users/history_doc.html', context)
+
+
 def userProfile(request, pk):
     profile = Profile.objects.get(id=pk)
 
@@ -174,29 +183,29 @@ def editAccount(request):
 def editAccountByAdmin(request, pk):
     profile = Profile.objects.get(id=pk) 
 
-    yearsPaid = profile.years.all()
-    #source = request.GET.get('source')
-    training_hours = 0
-    year_flag = False
-    
-    courses = profile.courses.all()
-    for course in courses:
-        training_hours += course.hours
-    profile.training_hours = training_hours
-    years = profile.years.all()
-    for year in years:
-        if year == datetime.now().year:
-            year_flag = True
-    profile.status = year_flag
-
     form = ProfileForm(instance=profile)
     context = {'form':form, 'profile': profile, 'source': 'admin'}
-    context2 = {'profile': profile, 'yearsPaid':yearsPaid, 'courses': courses, 'totalTrainingHours': training_hours}
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
+            profile = form.save()
+            yearsPaid = profile.years.all()
+            #source = request.GET.get('source')
+            training_hours = 0
+            year_flag = False
+            
+            courses = profile.courses.all()
+            for course in courses:
+                training_hours += course.hours
+            profile.training_hours = training_hours
+            years = profile.years.all()
+            for year in years:
+                if year == datetime.now().year:
+                    year_flag = True
+            profile.status = year_flag
+            profile.save()
             #return redirect('account')
+            context2 = {'profile': profile, 'yearsPaid':yearsPaid, 'courses': courses, 'totalTrainingHours': training_hours}
             return render(request, 'users/user-profile.html', context2)
 
     
@@ -292,10 +301,38 @@ def deleteSkill(request, pk):
     context = {'object': skill}
     return render(request, 'delete_template.html', context)
 
+@login_required(login_url='login')
+def getRegister(request, pk):
+    data = {}
+    if request.method == "GET":
+        owner = Profile.objects.get(id=pk)
+        locationField = request.GET.get('location')
+        modalityField = request.GET.get('modality')
+        registroField = request.GET.get('registro')
+        print(registroField)
+        locationData = Location.objects.get(name = locationField)
+        modalityData = Modality.objects.get(name = modalityField)
+        try:
+            #letter = LettersHistory.objects.filter(
+            #    owner = owner, 
+            #    letterType = 'dro',
+            #    location = locationData,
+            #    modality = modalityData
+            #)
+            registro = DroRegister.objects.filter(
+                owner = owner, 
+                location = locationData,
+                modality = modalityData
+            )
+        except Exception:
+            data['error_message'] = 'No data found'
+            return JsonResponse(data)
+    return JsonResponse(list(registro.values()), safe = False)
+
 
 def letterDRO(request, pk):
     profile = Profile.objects.get(id=pk)
-
+    #register = request.GET.get('location')
     context = {'profile':profile}
     return render(request, 'users/dro_letter.html', context)
 
@@ -347,6 +384,62 @@ def import_csv(request):
         print(identifier)
      
     return render(request, 'users/importexcel.html',{})
+
+#------------------------------------------------Update Users documents from excel----------------------------------------------#
+@login_required(login_url='login')
+def import_csv_update_document_users(request):              
+    try:
+        if request.method == 'POST' and request.FILES['myfile']:
+          
+            myfile = request.FILES['myfile']
+            print(myfile)        
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            excel_file = uploaded_file_url
+            print(excel_file) 
+            excel_url = str(settings.BASE_DIR) + static(excel_file)
+            print(excel_url) 
+            #empexceldata = pd.read_csv(excel_url,encoding='utf-8')
+            empexceldata = pd.read_csv(excel_url, header=0, names=[
+                'num_agremiado', 'name','request', 'veracity_letter', 'degree', 'photo','inscription','annuity',
+                'degree_card','speciallity_card','rfc','proof_of_address','ife','curp','resume','sat_enrollment',
+                'thesis','referral_cards','born_certificate','municipality_licence','state_card'],encoding='latin-1')
+            dbframe = empexceldata
+            print(dbframe)
+            for dbframe in dbframe.itertuples():
+                try:
+                    profile = Profile.objects.get(agremiado_number=dbframe.num_agremiado)
+                    profile.request = dbframe.request
+                    profile.veracity_letter = dbframe.veracity_letter
+                    profile.degree = dbframe.degree
+                    profile.photo = dbframe.photo
+                    profile.degree_card = dbframe.degree_card
+                    profile.speciallity_card = dbframe.speciallity_card
+                    profile.rfc = dbframe.rfc
+                    profile.proof_of_address = dbframe.proof_of_address
+                    profile.ife = dbframe.ife
+                    profile.curp = dbframe.curp
+                    profile.resume = dbframe.resume
+                    profile.sat_enrollment = dbframe.sat_enrollment
+                    profile.thesis = dbframe.thesis
+                    profile.referral_cards = dbframe.referral_cards
+                    profile.born_certificate = dbframe.born_certificate
+                    profile.municipality_licence = dbframe.municipality_licence
+                    profile.state_card = dbframe.state_card
+                    print(profile)
+                    profile.save()
+                except Profile.DoesNotExist:
+                    print("Architect not found: " + dbframe.num_agremiado)
+                
+    
+            return render(request, 'users/importexcelupdatearchitects.html', {
+                'uploaded_file_url': uploaded_file_url
+            })    
+    except Exception as identifier:            
+        print(identifier)
+     
+    return render(request, 'users/importexcelupdatearchitects.html',{})
 
 #------------------------------------------------Years from excel----------------------------------------------#
 @login_required(login_url='login')
@@ -418,7 +511,39 @@ def import_csv_year(request):
     return render(request, 'users/importexcelyears.html',{})
 
 #-------------------------------------------------------------------------------------------#
-
+#------------------------------------------------SPECIALTIES from excel----------------------------------------------#
+@login_required(login_url='login')
+def import_csv_skill(request):              
+    try:
+        if request.method == 'POST' and request.FILES['myfile']:
+          
+            myfile = request.FILES['myfile']
+            print(myfile)        
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            excel_file = uploaded_file_url
+            print(excel_file) 
+            excel_url = str(settings.BASE_DIR) + static(excel_file)
+            print(excel_url) 
+            #empexceldata = pd.read_csv(excel_url,encoding='utf-8')
+            empexceldata = pd.read_csv(excel_url, header=0, names=['name', 'description'],encoding='latin-1')
+            dbframe = empexceldata
+            print(dbframe)
+            for dbframe in dbframe.itertuples():
+                
+                #obj = Profile.objects.create(agremiado_number=dbframe.num_agremiado, name=dbframe.nombre, email=dbframe.email, username=dbframe.username, phone=dbframe.telefono, mobile=dbframe.celular)
+                obj = Skill.objects.create(name=dbframe.name, description=dbframe.description)
+                print(obj)
+                obj.save()
+    
+            return render(request, 'users/importexcelskills.html', {
+                'uploaded_file_url': uploaded_file_url
+            })    
+    except Exception as identifier:            
+        print(identifier)
+     
+    return render(request, 'users/importexcelskills.html',{})
 
 #------------------------------------------------Locations from excel----------------------------------------------#
 @login_required(login_url='login')
@@ -800,7 +925,9 @@ def dro_pdf(request, pk):
 
     #profile = Profile.objects.get(id=pk)
 
-    profile, location, modality = sendDataDRO(request, pk)
+    profile, location, modality, registro = sendDataDRO(request, pk)
+
+    print(registro)
 
     context = {'profile':profile, 'location': location, 'modality': modality}
 
@@ -888,7 +1015,7 @@ def dro_pdf(request, pk):
     y = h - 390
     para.drawOn(p, 1*cm, y)
 
-    text_data = "Registro: <b>drz-2108</b>"
+    text_data = "Registro: <b>"+ registro +"</b>"
     style_data = getSampleStyleSheet()["Normal"]
     style_data.alignment = TA_LEFT
     para = Paragraph(text_data, style_data)
@@ -1353,4 +1480,22 @@ def convertBoolean(lista):
         lista[2] = 'No'
     return lista
 
+#------------------------------ Courses -------------------------------------
 
+
+@login_required(login_url="login")
+def createProject(request):
+    profile = request.user.profile
+    form = CourseForm()
+
+    if request.method == 'POST':
+        newtags = request.POST.get('newtags').replace(',', " ").split()
+
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.save()
+            return redirect('profiles')
+
+    context = {'form': form}
+    return render(request, 'projects/project_form.html', context)

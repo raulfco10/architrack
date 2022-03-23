@@ -3,9 +3,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from .serializers import (ProfileSerializer, ProjectSerializer, LocationSerializer, 
-ModalitySerializer, SkillSerializer, YearSerializer, CourseSerializer)
+ModalitySerializer, SkillSerializer, YearSerializer, CourseSerializer, LettersHistorySerializer)
 from projects.models import Project, Review
-from users.models import Profile, Location, Modality, Skill, Year, Course
+from users.models import Profile, Location, Modality, Skill, Year, Course, LettersHistory
 
 from api import serializers
 
@@ -15,6 +15,8 @@ def getRoutes(request):
     routes = [
         {'GET':'api/projects'},
         {'GET':'api/projects/id'},
+        {'GET':'api/register/id'},
+        {'GET':'api/letters/id'},
         {'POST':'api/projects/id/vote'},
         {'POST':'api/profile'},
         {'POST':'api/locations'},
@@ -39,6 +41,31 @@ def getProjects(request):
 def getProject(request, pk):
     project = Project.objects.get(id=pk)
     serializer = ProjectSerializer(project, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def postLetterRegister(request):
+    user = request.user.profile
+    data = request.data
+    type_of_letter = data['letterType']
+    locationField = data['location']
+    modalityField = data['modality']
+    registro = data['register']
+
+    locationData = Location.objects.get(name = locationField)
+    modalityData = Modality.objects.get(name = modalityField)
+    
+    letter = LettersHistory(
+        owner = user,
+        letterType = type_of_letter,
+        location = locationData,
+        modality = modalityData,
+        register = registro
+    )
+
+    letter.save()
+    serializer = LettersHistorySerializer(letter, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -162,6 +189,38 @@ def createYear (request):
     year.save()
 
     serializer = YearSerializer(year, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def documentsUpdate (request):
+    data = request.data
+    #print("BODY: ", data)
+    try:
+        profile = Profile.objects.get(agremiado_number=data['agremiado_number'])
+        profile.request = data['request']
+        profile.veracity_letter = data['veracity_letter']
+        profile.degree = data['degree']
+        profile.photo = data['photo']
+        profile.degree_card = data['degree_card']
+        profile.speciallity_card = data['speciallity_card']
+        profile.rfc = data['rfc']
+        profile.proof_of_address = data['proof_of_address']
+        profile.ife = data['ife']
+        profile.curp = data['curp']
+        profile.resume = data['resume']
+        profile.sat_enrollment = data['sat_enrollment']
+        profile.thesis = data['thesis']
+        profile.referral_cards = data['referral_cards']
+        profile.born_certificate = data['born_certificate']
+        profile.municipality_licence = data['municipality_licence']
+        profile.state_card = data['state_card']
+        print(profile)
+        profile.save()
+    except Profile.DoesNotExist:
+        print("Architect not found: " + data['agremiado_number'])
+
+    serializer = ProfileSerializer(profile, many=False)
     return Response(serializer.data)
 
 @permission_classes([IsAuthenticated])

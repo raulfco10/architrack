@@ -15,7 +15,7 @@
               {% if totalTrainingHours < 50 %}
               <a class="tag tag--pill tag--main settings__btn" href="{% url 'commitment-form' profile.id %}">Compromiso</a>
               {% endif %}
-              <a class="tag tag--pill tag--main settings__btn" href="{% url 'checklist-pdf' profile.id %}">Checklist</a>
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'checklist-pdf' profile.id %}">Historial</a>
               <img class="avatar avatar--xl" src="{{ profile.imageURL }}" />
               <h2 class="dev__name">{{profile.name}}</h2>
               <p class="dev__title">{{profile.short_intro}}</p>

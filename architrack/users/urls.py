@@ -30,5 +30,10 @@ urlpatterns = [
     path('import-csv/', views.import_csv, name="import-csv"),
     path('import-csv-year/', views.import_csv_year, name="import-csv-year"),
     path('import-csv-location/', views.import_csv_location, name="import-csv-location"),
+    path('import-csv-user-update', views.import_csv_update_document_users, name="import-csv-user-update"),
+    path('import-csv-skills', views.import_csv_skill, name="import-csv-skills"),
+
+    path('letters/<str:pk>/', views.getRegister, name="get_letter_history"),
+    path('documentshistory/', views.documentsHistory, name='documents_history'),
 
 ]

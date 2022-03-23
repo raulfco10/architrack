@@ -1,10 +1,11 @@
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
 # Create your models here.
 
 class Location(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     description = models.TextField(blank=True, null=True)
     responsible = models.TextField(max_length=200, blank=True, null=True)
     position_responsible = models.TextField(max_length=500, blank=True, null=True)
@@ -14,7 +15,7 @@ class Location(models.Model):
         return str(self.name)
 
 class Modality(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -62,7 +63,7 @@ class Profile(models.Model):
     social_linkedin = models.CharField(max_length=200, blank=True, null=True)
     social_youtube = models.CharField(max_length=200, blank=True, null=True)
     social_website = models.CharField(max_length=200, blank=True, null=True)
-    courses = models.ManyToManyField('Course', blank=True)
+    courses = models.ManyToManyField('Course', blank=True, verbose_name="Cursos tomados")
     training_hours = models.IntegerField(blank=True, null=True)
     years = models.ManyToManyField('Year', blank=True)
     status = models.BooleanField(blank=True, null=True)
@@ -89,7 +90,7 @@ class Profile(models.Model):
 
 class Skill(models.Model):
     #owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=200, blank=True, null=True)
+    name = models.CharField(max_length=200, blank=True, null=True, unique=True)
     description = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
@@ -119,6 +120,41 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+class LettersHistory(models.Model):
+    LETTER_TYPE = (
+        ('dro','Carta DRO'),
+        ('checklist','Carta Checklist'),
+        ('veracidad','Carta de Veracidad'),
+        ('compromiso','Carta Compromiso'),
+    )
+    id = models.AutoField(primary_key=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    letterType = models.CharField(max_length=50, choices=LETTER_TYPE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
+    modality = models.ForeignKey(Modality, on_delete=models.CASCADE, null=True, blank=True)
+    register = models.CharField(max_length=200, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.register if self.register else ''  
+
+class DroRegister(models.Model):
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
+    modality = models.ForeignKey(Modality, on_delete=models.CASCADE, null=True, blank=True)
+    register = models.CharField(max_length=200, blank=True, null=True)
+    status = models.BooleanField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    #class Meta:
+    #    unique_together = (('owner','location','modality','register'),)
+
+    def __str__(self):
+        return self.register if self.register else ''   
+
+
 
 
     

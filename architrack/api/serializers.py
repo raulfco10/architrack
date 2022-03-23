@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from projects.models import Project, Tag, Review
-from users.models import Profile, Location, Modality, Course, Skill, Year
+from users.models import Profile, Location, Modality, Course, Skill, Year, LettersHistory
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,4 +55,9 @@ class CourseSerializer(serializers.ModelSerializer):
 class YearSerializer(serializers.ModelSerializer):
     class Meta:
         model = Year
+        fields = '__all__'
+
+class LettersHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LettersHistory
         fields = '__all__'

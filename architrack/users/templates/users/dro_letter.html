@@ -12,19 +12,24 @@
               <h2 class="dev__name">{{profile.name}}</h2>
               <p class="dev__location">Seleccionar Ubicación</p>
               <form  id='droOptions' class="form" action="{% url 'dro-pdf' profile.id %}" method="get">
-                <select name="location">
+                <select id="location-field" name="location" required>
+                  <option value=""></option>
                   {% for location in locations %}
                   <option value="{{location}}">{{location}}</option>
                   {% endfor %}
                 </select>
                 <p class="dev__location">Seleccionar Modalidad</p>
-                <select name="modality">
-                  {% for modality in modalities %}
-                  <option value="{{modality}}">{{modality}}</option>
-                  {% endfor %}
-                </select>
-                <ul class="dev__social">
-                </ul>
+                <div class="form__field">
+                  <select id="modality-field" name="modality" required>
+                    {% for modality in modalities %}
+                    <option value="{{modality}}">{{modality}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form__field">
+                  <label for="registro">Registro</label>
+                  <input type="text" id="registro-field" name="registro" required />
+                </div>
                 <input class="btn btn--sub btn--lg" type="submit" value="Generar Carta" />
               </form>
             </div>
@@ -35,3 +40,71 @@
   </main>
 
 {% endblock content %}
+
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+
+$(document).ready(function(){
+  $("#location-field").change(function (){
+    let registerSection = document.getElementById('registro-field')
+    const location = $(this).val();
+    let modality = document.getElementById('modality-field')
+    console.log(registerSection.value)
+    $.ajax({
+      type: "GET",
+      url: '{% url "get_letter_history" profile.id %}',
+      data: {
+        'location': location,
+        'modality': modality.value,
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function (data) {
+        console.log(data)
+        if (data.length > 0){
+          //$('#registro-field').val(data[0].register)
+          //$('#registro-field').prop('readonly', true)
+          registerSection.value = data[0].register
+          //registerSection.readonly = true
+        }else{
+          //$('#registro-field').val('')
+          //$('#registro-field').prop('readonly', false)
+          registerSection.value = ""
+          //registerSection.readonly = false
+        }       
+      }
+    })
+  });
+
+  $("#modality-field").change(function (){
+      const modality = $(this).val();
+      let location = document.getElementById('location-field')
+      let registerSection = document.getElementById('registro-field')
+      $.ajax({
+        type: "GET",
+        url: '{% url "get_letter_history" profile.id %}',
+        data: {
+          'location': location.value,
+          'modality': modality,
+          'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+        },
+        success: function (data) {
+          console.log(data)
+          if (data.length > 0){
+            //$('#registro-field').val(data[0].register)
+            registerSection.value = data[0].register
+            
+          }else{
+            //$('#registro-field').val('')
+            registerSection.value = ""
+            
+          }
+          
+        }
+      })
+    });
+
+});
+</script>
+{% endblock javascript %}
+

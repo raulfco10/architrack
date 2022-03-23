@@ -10,7 +10,7 @@
         e.preventDefault()
         //GET DE DATA ATTRIBUTE
         let page = this.dataset.page
-        console.log('PAGE: ', page)
+        //console.log('PAGE: ', page)
 
         //ADD HIDDEN SEARCH INPUT TO FORM
         searchForm.innerHTML += `<input value=${page} name="page" hidden />` 
@@ -20,3 +20,5 @@
       })
     }
   }
+
+  

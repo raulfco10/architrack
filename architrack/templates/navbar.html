@@ -14,12 +14,11 @@
           <div class="toggle-menu__lines"></div>
         </label>
         <ul class="header__menu">
-          <li class="header__menuItem"><a href="{% url 'profiles' %}">Arquitectos</a></li>
-          <li class="header__menuItem"><a href="{% url 'projects' %}">Proyectos</a></li>
-          <li class="header__menuItem"><a href="">Inbox</a></li>
-
           {% if request.user.is_authenticated %}
-          <li class="header__menuItem"><a href="{% url 'account' %}">Mi Cuenta</a></li>
+          <li class="header__menuItem"><a href="{% url 'profiles' %}">Arquitectos</a></li>
+          <li class="header__menuItem"><a href="{% url 'documents_history' %}">Resumen</a></li>
+          <!--<li class="header__menuItem"><a href="">Inbox</a></li>-->
+          <!--<li class="header__menuItem"><a href="{% url 'account' %}">Mi Cuenta</a></li>-->
           <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">Salir</a></li>
           {% else %}
           <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Entrar/Registrarse</a></li>

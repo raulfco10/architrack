@@ -1,5 +1,8 @@
-from .models import Modality, Profile, Skill, Location
+from logging import exception
+import re
+from .models import DroRegister, Modality, Profile, Skill, Location, LettersHistory
 from django.db.models import Q
+from django.contrib import messages
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
@@ -51,8 +54,33 @@ def searchProfiles(request):
 def sendDataDRO(request, pk):
     profile = Profile.objects.get(id=pk)
     location_field = request.GET.get('location')
+    modality_field = request.GET.get('modality')
+    registro = request.GET.get('registro')
     location = Location.objects.get(name = location_field)
-    #print(type(location.responsible))
-    modality = request.GET.get('modality')
+    modality = Modality.objects.get(name = modality_field)
+    type_of_letter = "dro"
+    registro = request.GET.get('registro')
 
-    return profile, location, modality
+    print(request)
+    try:
+        letter = LettersHistory(
+            owner = profile,
+            letterType = type_of_letter,
+            location = location,
+            modality = modality,
+            register = registro
+        )
+        letter.save()
+        
+        register, created = DroRegister.objects.get_or_create(
+            owner = profile,
+            location = location,
+            modality = modality,
+            register = registro
+        )
+        register.save()
+    except exception:
+        messages.error(request, 'Error la guardar historial o registro')
+
+
+    return profile, location, modality.name, registro

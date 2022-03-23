@@ -6,7 +6,7 @@
     <main class="formPage my-xl">
         <div class="content-box">
             <div class="formWrapper">
-                <a class="backButton" href="{% url 'account' %}"><i class="im im-angle-left"></i></a>
+                <a class="backButton" href="{% url 'user-profile' profile.id %}"><i class="im im-angle-left"></i></a>
                 <br>
                 {% if source == 'admin' %}
                 <form class="form" method="POST" action="{%url 'edit-account-admin' profile.id %}" enctype="multipart/form-data">
