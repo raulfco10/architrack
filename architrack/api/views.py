@@ -215,13 +215,13 @@ def documentsUpdate (request):
         profile.born_certificate = data['born_certificate']
         profile.municipality_licence = data['municipality_licence']
         profile.state_card = data['state_card']
-        print(profile)
         profile.save()
     except Profile.DoesNotExist:
-        print("Architect not found: " + data['agremiado_number'])
+        result = {"Actualizacion":"No Exitosa"}
 
-    serializer = ProfileSerializer(profile, many=False)
-    return Response(serializer.data)
+    #serializer = ProfileSerializer(profile, many=False)
+    result = {"Actualizacion":"Exitosa"}
+    return Response(result)
 
 @permission_classes([IsAuthenticated])
 class ProfileViewSet(viewsets.ModelViewSet):

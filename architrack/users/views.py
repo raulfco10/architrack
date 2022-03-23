@@ -1170,10 +1170,11 @@ def checklist_pdf(request, pk):
     p.drawImage(logo, x, y, 80, 80, mask='auto')
 
     p.setFillColorRGB(0.501, 0.505, 0.494)
-
+    
+    #––––––––––––––––Rectangulo Nombre Titulo––––––––––––––––––––––––––––––––––––––
     x= 105
     y= h - 120
-    p.rect(x, y, 117, 40, fill=1)
+    p.rect(x, y, 67, 40, fill=1)
 
     x= 105
     y= h - 160
@@ -1181,9 +1182,10 @@ def checklist_pdf(request, pk):
 
     p.setFillColorRGB(0.882, 0.878, 0.878)
 
+    #––––––––––––––––Rectangulo Nombre Dato––––––––––––––––––––––––––––––––––––––
     x= 105
     y= h - 120
-    p.rect(x + 117, y, 158, 40, fill=1)
+    p.rect(x + 67, y, 208, 40, fill=1)
 
     x= 105
     y= h - 160
@@ -1217,7 +1219,7 @@ def checklist_pdf(request, pk):
     para = Paragraph(text_name, style_name)
     x, y = para.wrap(18*cm, 4*cm)
     y = h - 105
-    para.drawOn(p, 4.8*cm, y)
+    para.drawOn(p, 4*cm, y)
 
     text_name = profile.name
     style_name = getSampleStyleSheet()["Normal"]
@@ -1225,13 +1227,13 @@ def checklist_pdf(request, pk):
     para = Paragraph(text_name, style_name)
     x, y = para.wrap(18*cm, 4*cm)
     y = h - 105
-    para.drawOn(p, 8*cm, y)
+    para.drawOn(p, 6.3*cm, y)
 
     text_fecha = "<b>Fecha:</b>"
     style_fecha = getSampleStyleSheet()["Normal"]
     style_fecha.alignment = TA_LEFT
     para = Paragraph(text_fecha, style_fecha)
-    x, y = para.wrap(18*cm, 4*cm)
+    x, y = para.wrap(18*cm, 8*cm)
     y = h - 105
     para.drawOn(p, 14.2*cm, y)
 
