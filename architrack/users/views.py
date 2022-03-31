@@ -1422,10 +1422,10 @@ def checklist_pdf(request, pk):
             t.setStyle(TableStyle([('BACKGROUND', (0, each), (-1, each), bg_color)]))
 
         aW = 40
-        aH = 620 - (data_len_train * 30)
+        aH = 560 - (data_len_train * 30)
 
         w, h = header.wrap(18*cm, 4*cm)
-        header.drawOn(p, 8*cm, 615 - (data_len_train * 30))
+        header.drawOn(p, 8*cm, 560 - (data_len_train * 30))
         aH = aH - h
         w, h = t.wrap(aW, aH)
         t.drawOn(p, 8*cm, aH-h)
@@ -1460,10 +1460,10 @@ def checklist_pdf(request, pk):
     aH = 620 - (data_len_train * 30)
 
     w, h = header.wrap(18*cm, 4*cm)
-    header.drawOn(p, 13*cm, 615 - (data_len_train * 30))
+    header.drawOn(p, 8*cm, 615 - (data_len_train * 30))
     aH = aH - h
     w, h = t.wrap(aW, aH)
-    t.drawOn(p, 13*cm, aH-h)
+    t.drawOn(p, 8*cm, aH-h)
 
 #---------------------------------------------------------------------------------------------------------------
 
