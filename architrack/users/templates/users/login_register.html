@@ -9,8 +9,8 @@
           <a href="/">
             <img src="{% static 'images/icon.svg' %}" alt="icon" />
           </a>
-          <h3>Register an Account</h3>
-          <p>Create a new developer account</p>
+          <h3>Resgistrarse</h3>
+          <p>Crear una nueva cuenta</p>
         </div>
 
         <form method="POST" action="{% url 'register' %}" class="form auth__form">
@@ -36,7 +36,7 @@
           </div>
         </form>
         <div class="auth__alternative">
-          <p>Already have an Account?</p>
+          <p>¿Ya tienes una cuenta?</p>
           <a href="{% url 'login' %}">Log In</a>
         </div>
       </div>
@@ -48,27 +48,27 @@
           <a href="/">
             <img src="{% static 'images/icon.svg' %}" alt="icon" />
           </a>
-          <h3>Account Login</h3>
-          <p>Hello Developer, Welcome Back!</p>
+          <h3>Acceso</h3>
+          <p>Bienvenido!</p>
         </div>
 
         <form action="" method="POST" class="form auth__form">
           {% csrf_token %}
           <!-- Input:Username -->
           <div class="form__field">
-            <label for="formInput#text">Username: </label>
+            <label for="formInput#text">Usuario: </label>
             <input
               class="input input--text"
               id="formInput#text"
               type="text"
               name="username"
-              placeholder="Enter your username..."
+              placeholder="Ingresa tu usuario..."
             />
           </div>
 
           <!-- Input:Password -->
           <div class="form__field">
-            <label for="formInput#password">Password: </label>
+            <label for="formInput#password">Contraseña: </label>
             <input
               class="input input--password"
               id="formInput#passowrd"
@@ -78,14 +78,10 @@
             />
           </div>
           <div class="auth__actions">
-            <input class="btn btn--sub btn--lg" type="submit" value="Log In" />
-            <a href="forgetpassword.html">Forget Password?</a>
+            <input class="btn btn--sub btn--lg" type="submit" value="Ingresar" />
+            <a href="forgetpassword.html">¿Olvidaste tu contraseña?</a>
           </div>
         </form>
-        <div class="auth__alternative">
-          <p>Don’t have an Account?</p>
-          <a href="{% url 'register' %}">Sign Up</a>
-        </div>
       </div>
     </div>
 {% endif %}

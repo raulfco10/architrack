@@ -74,15 +74,15 @@ def loginUser(request):
 
         if user is not None:
             login(request, user)
-            return redirect(request.GET['next'] if 'next' in request.GET else 'account')
+            return redirect(request.GET['next'] if 'next' in request.GET else 'profiles')
         else:
-            messages.error(request,'Username OR password is incorrect')
+            messages.error(request,'Usuario o password son incorrectos')
 
     return render(request, 'users/login_register.html')
 
 def logoutUser(request):
     logout(request)
-    messages.info(request, 'User was logged out')
+    messages.info(request, 'Usuario ha cerrado sesión')
     return redirect('login')
 
 def registerUser(request):
@@ -919,9 +919,11 @@ def dro_pdf(request, pk):
     w, h = letter
 
     buffer = BytesIO()
-
+    watermark = str(settings.BASE_DIR) + static("/images/IconoCAEJ_Mesa.jpeg")
 
     p = canvas.Canvas(buffer, pagesize=letter)
+
+    p.drawImage(watermark,10,70, 600,600)
 
     #profile = Profile.objects.get(id=pk)
 
@@ -932,7 +934,8 @@ def dro_pdf(request, pk):
     context = {'profile':profile, 'location': location, 'modality': modality}
 
 
-    p.setFillColorRGB(0.29296875, 0.453125, 0.609365)
+    #p.setFillColorRGB(0.29296875, 0.453125, 0.609365)
+    p.setFillColorRGB(0.61, 0.2, 0.2)
 
     x= 0
     y= h - 80
@@ -942,6 +945,7 @@ def dro_pdf(request, pk):
     p.setFillColorRGB(0,0,0)
 
     logo = str(settings.BASE_DIR) + static("/images/LOGO_LETRAS_Blanco.png")
+
 
     p.drawImage(logo, x+290, h-70, 80, 40, mask='auto')
 
@@ -1103,7 +1107,7 @@ def dro_pdf(request, pk):
     y = h - 720
     para.drawOn(p, 1*cm, y)
 
-    text_data = "Carta con vigencia del año en curso: <i>Gualajara, Jalisco</i>. " + str(now.day) + "/" + str(now.month) + "/" + str(now.year)
+    text_data = "Este documento tiene validez hasta el 31 de diciembre del año en curso: <i>Gualajara, Jalisco</i>. " + str(now.day) + "/" + str(now.month) + "/" + str(now.year)
     style_data = getSampleStyleSheet()["Normal"]
     style_data.alignment = TA_LEFT
     para = Paragraph(text_data, style_data)
