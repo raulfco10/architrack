@@ -18,7 +18,9 @@
               <a class="tag tag--pill tag--main settings__btn" href="{% url 'checklist-pdf' profile.id %}">Historial</a>
               <img class="avatar avatar--xl" src="{{ profile.imageURL }}" />
               <h2 class="dev__name">{{profile.name}}</h2>
+              {% if profile.short_intro %}
               <p class="dev__title">{{profile.short_intro}}</p>
+              {% endif %}
               <!--<p class="dev__location">Base en {{profile.location}}</p>-->
               <ul class="dev__social">
 
@@ -48,7 +50,6 @@
                 </li>
                 {% endif %}
               </ul>
-              <a href="#" class="btn btn--sub btn--lg">Enviar Mensaje </a>
             </div>
           </div>
         </div>
