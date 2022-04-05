@@ -67,6 +67,7 @@ class Profile(models.Model):
     training_hours = models.IntegerField(blank=True, null=True)
     years = models.ManyToManyField('Year', blank=True)
     status = models.BooleanField(blank=True, null=True)
+    imageWIXURL = models.CharField(max_length=500, blank=True, null=True, verbose_name="Imangen desde WIX")
     compromiso = models.BooleanField(blank=True, null=True)
     compromiso_date = models.DateTimeField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)

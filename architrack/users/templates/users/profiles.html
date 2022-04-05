@@ -33,7 +33,11 @@
             <div class="dev">
               <a href="{% url 'user-profile' profile.id %}" class="card__body">
                 <div class="dev__profile">
+                  {% if profile.imageWIXURL %}
+                  <img class="avatar avatar--md" src="{{ profile.imageWIXURL }}" alt="image" />
+                  {% else %}
                   <img class="avatar avatar--md" src="{{ profile.imageURL }}" alt="image" />
+                  {% endif %}
                   <div class="dev__meta">
                     <h3>{{ profile.name }}</h3>
                     <h5>{{ profile.short_intro }}</h5>

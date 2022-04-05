@@ -6,7 +6,7 @@ from .serializers import (ProfileSerializer, ProjectSerializer, LocationSerializ
 ModalitySerializer, SkillSerializer, YearSerializer, CourseSerializer, LettersHistorySerializer)
 from projects.models import Project, Review
 from users.models import Profile, Location, Modality, Skill, Year, Course, LettersHistory
-
+from django.contrib.auth.models import User
 from api import serializers
 
 @api_view(['GET'])
@@ -93,36 +93,41 @@ def projectVote(request, pk):
 def createProfile(request):
     data = request.data
 
-    profile = Profile(
-        user=data.user,
-        agremiado_number = data.agremiado_number,
-        name = data.name,
-        email = data.email,
-        username = data.username,
-        phone = data.phone,
-        mobile = data.mobile,
-        degree_card_number = data.degree_card_number,
-        request = data.request,
-        veracity_letter = data.veracity_letter,
-        degree = data.degree,
-        photo = data.photo,
-        inscription = data.inscription,
-        annuity = data.annuity,
-        degree_card = data.degree_card,
-        speciallity_card = data.speciallity_card,
-        rfc = data.rfc,
-        proof_of_address = data.proof_of_address,
-        ife = data.ife,
-        curp = data.curp,
-        resume = data.resume,
-        sat_enrollment = data.sat_enrollment,
-        thesis = data.thesis,
-        referral_cards = data.referral_cards,
-        born_certificate = data.born_certificate,
-        municipality_licence = data.municipality_licence,
-        state_card = data.state_card
-    )
+    user = User.objects.create(
+        username=data['username'], 
+        first_name=data['first_name'], 
+        email=data['email'], 
+        password="testuser1234", 
+        is_staff=False
+        )
+    user.save()
 
+    profile = Profile.objects.get(username=user.username)
+    profile.agremiado_number = data['agremiado_number']
+    profile.name = data['first_name'] + " " + data['last_name']
+    profile.email = data['email']
+    profile.username = data['username']
+    profile.phone = data['phone']
+    profile.mobile = data['mobile']
+    profile.degree_card_number = data['degree_card_number']
+    profile.request = data['request']
+    profile.veracity_letter = data['veracity_letter']
+    profile.degree = data['degree']
+    profile.photo = data['photo']
+    profile.degree_card = data['degree_card']
+    profile.speciallity_card = data['speciallity_card']
+    profile.rfc = data['rfc']
+    profile.proof_of_address = data['proof_of_address']
+    profile.ife = data['ife']
+    profile.curp = data['curp']
+    profile.resume = data['resume']
+    profile.sat_enrollment = data['sat_enrollment']
+    profile.thesis = data['thesis']
+    profile.referral_cards = data['referral_cards']
+    profile.born_certificate = data['born_certificate']
+    profile.municipality_licence = data['municipality_licence']
+    profile.state_card = data['state_card']
+    profile.imageWIXURL = data['photoURL']
     profile.save()
 
     serializer = ProfileSerializer(profile, many=False)

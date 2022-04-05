@@ -16,7 +16,11 @@
               <a class="tag tag--pill tag--main settings__btn" href="{% url 'commitment-form' profile.id %}">Compromiso</a>
               {% endif %}
               <a class="tag tag--pill tag--main settings__btn" href="{% url 'checklist-pdf' profile.id %}">Historial</a>
+              {% if profile.imageWIXURL %}
+              <img class="avatar avatar--xl" src="{{ profile.imageWIXURL }}" />
+              {% else %}
               <img class="avatar avatar--xl" src="{{ profile.imageURL }}" />
+              {% endif %}
               <h2 class="dev__name">{{profile.name}}</h2>
               {% if profile.short_intro %}
               <p class="dev__title">{{profile.short_intro}}</p>

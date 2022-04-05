@@ -24,7 +24,7 @@ urlpatterns = [
     path('letters/', views.postLetterRegister, name="letter_history"),
     path('documentsupdate/', views.documentsUpdate),
 
-    #path('profile/', views.createProfile),
+    path('profile/', views.createProfile),
     path('locations/', views.createLocation),
     path('modalities/', views.createModality),
     #path('skills/', views.createSkill),
