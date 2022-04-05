@@ -130,8 +130,8 @@ def createProfile(request):
     profile.imageWIXURL = data['photoURL']
     profile.save()
 
-    serializer = ProfileSerializer(profile, many=False)
-    return Response(serializer.data)
+    result = {"Actualizacion":"Exitosa"}
+    return Response(result)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -220,6 +220,7 @@ def documentsUpdate (request):
         profile.born_certificate = data['born_certificate']
         profile.municipality_licence = data['municipality_licence']
         profile.state_card = data['state_card']
+        profile.imageWIXURL = data['photoURL']
         profile.save()
     except Profile.DoesNotExist:
         result = {"Actualizacion":"No Exitosa"}
