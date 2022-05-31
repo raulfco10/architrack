@@ -23,6 +23,7 @@ urlpatterns = [
     path('projects/<str:pk>/vote/', views.projectVote),
     path('letters/', views.postLetterRegister, name="letter_history"),
     path('documentsupdate/', views.documentsUpdate),
+    path('profileupdate/', views.profileUpdate),
 
     path('profile/', views.createProfile),
     path('locations/', views.createLocation),

@@ -229,6 +229,27 @@ def documentsUpdate (request):
     result = {"Actualizacion":"Exitosa"}
     return Response(result)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def profileUpdate (request):
+    data = request.data
+    #print("BODY: ", data)
+    try:
+        profile = Profile.objects.get(agremiado_number=data['agremiado_number'])
+        profile.name = data['name']
+        profile.email = data['email']
+        profile.phone = data['phone']
+        profile.mobile = data['mobile']
+        profile.degree_card_number = data['degree_card_number']
+        profile.imageWIXURL = data['photoURL']
+        profile.save()
+    except Profile.DoesNotExist:
+        result = {"Actualizacion":"No Exitosa"}
+
+    #serializer = ProfileSerializer(profile, many=False)
+    result = {"Actualizacion":"Exitosa"}
+    return Response(result)
+
 @permission_classes([IsAuthenticated])
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
